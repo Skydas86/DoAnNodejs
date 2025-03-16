@@ -22,5 +22,14 @@
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Skydas86/DoAnNodejs.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Skydas86/DoAnNodejs/issues"
+  },
+  "homepage": "https://github.com/Skydas86/DoAnNodejs#readme"
 }
