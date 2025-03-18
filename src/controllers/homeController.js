@@ -1,5 +1,3 @@
-
-
 const ABC =(req, res)=>{
     res.send('OKAY')
 }

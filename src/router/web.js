@@ -13,8 +13,9 @@ router.get('/demo', (req, res) => {
   router.get('/', (req, res) => {
     res.render('homepage.ejs')
   });
+
   router.get('/login', (req, res) => {
     res.render('login.ejs')
   });
-
+  
 module.exports = router;
