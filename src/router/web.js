@@ -2,7 +2,7 @@
 const {ABC, getUsers} = require('../controllers/homeController')
 const express = require('express');
 const router = express.Router();
-const { register } = require("../controllers/authController");
+const { register, login } = require("../controllers/authController");
 
 //router.Method("/route",handler)
 
@@ -18,6 +18,7 @@ router.get('/demo', (req, res) => {
   router.get('/login', (req, res) => {
     res.render('login.ejs')
   });
+  router.post("/login", login);
   router.get('/register', (req, res) => {
     res.render('register.ejs')
   });

@@ -340,7 +340,7 @@
             
             <form id="loginForm">
                 <div class="form-group">
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" id="email" placeholder="Email" required>
                 </div>
                 
                 <div class="form-group">
@@ -394,78 +394,102 @@
                             </svg>
                             Twitter
                         </button>
-                        
                     </div>
                     <div class="login-link">
-                        chưa tài khoản? <a href="/register">Đăng ký</a>
-                       </div>
+                        Chưa có tài khoản? <a href="/register">Đăng ký</a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Show form with animation when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                document.querySelector('.login-form').classList.add('visible');
-            }, 100);
-        });
+       document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('loginForm');
+    const signInBtn = document.querySelector('.sign-in-btn');
+    const spinner = document.querySelector('.spinner');
 
-        // Parallax effect for background
-        document.addEventListener('mousemove', function(e) {
-            const background = document.querySelector('.background');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            background.style.transform = `translate(${x * -20}px, ${y * -20}px) scale(1.1)`;
-        });
+    // Tạo phần tử errorMessage và thêm vào DOM
+    const errorMessage = document.createElement('div');
+    errorMessage.id = 'error-message';
+    errorMessage.style.color = 'red';
+    errorMessage.style.marginBottom = '1rem';
+    form.prepend(errorMessage); // Thêm errorMessage vào đầu form
 
-        // Password visibility toggle
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
+    // Show form with animation when page loads
+    setTimeout(() => {
+        document.querySelector('.login-form').classList.add('visible');
+    }, 100);
 
-        togglePassword.addEventListener('click', function() {
-            // Toggle the type attribute
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            // Toggle the eye icon
-            if (type === 'password') {
-                this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>`;
-            } else {
-                this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                    <line x1="1" y1="1" x2="23" y2="23"></line>
-                </svg>`;
+    // Parallax effect for background
+    document.addEventListener('mousemove', function (e) {
+        const background = document.querySelector('.background');
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        background.style.transform = `translate(${x * -20}px, ${y * -20}px) scale(1.1)`;
+    });
+
+    // Password visibility toggle
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.innerHTML = type === 'password' ?
+            `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>` :
+            `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>`;
+    });
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Kiểm tra xem errorMessage có tồn tại không
+        if (!errorMessage) {
+            console.error('Phần tử errorMessage không tồn tại!');
+            return;
+        }
+
+        if (!email || !password) {
+            errorMessage.textContent = 'Vui lòng nhập email và mật khẩu!';
+            return;
+        }
+
+        spinner.style.display = 'inline-block';
+        signInBtn.disabled = true;
+        errorMessage.textContent = ''; // Xóa thông báo lỗi cũ
+
+        try {
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Email: email, Password: password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Đăng nhập thất bại!');
             }
-        });
 
-        // Form submission with loading animation
-        const form = document.getElementById('loginForm');
-        const signInBtn = document.querySelector('.sign-in-btn');
-        const spinner = document.querySelector('.spinner');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show loading state
-            spinner.style.display = 'inline-block';
-            signInBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                // Hide loading state
-                spinner.style.display = 'none';
-                signInBtn.disabled = false;
-                
-                console.log('Form submitted');
-                // You would typically handle form submission here
-            }, 1500);
-        });
+            localStorage.setItem('token', data.token);
+            window.location.href = "/";
+        } catch (error) {
+            errorMessage.textContent = error.message; // Hiển thị thông báo lỗi
+        } finally {
+            spinner.style.display = 'none';
+            signInBtn.disabled = false;
+        }
+    });
+});
     </script>
 </body>
 </html>
