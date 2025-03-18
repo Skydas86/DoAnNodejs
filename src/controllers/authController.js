@@ -6,26 +6,15 @@ const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const register = async (req, res) => {
   try {
-    const { Username, Password, Email, CardNumber, RoleId } = req.body;
+    const { Username, Password, Email, CardNumber } = req.body;
 
-    if (!Username || !Password || !Email || !CardNumber || !RoleId) {
+    if (!Username || !Password || !Email || !CardNumber) {
       return res.status(400).json({ error: "Vui lòng điền đầy đủ thông tin!" });
-    }
-
-    const roleIdNum = Number(RoleId);
-    if (isNaN(roleIdNum)) {
-      return res.status(400).json({ error: "RoleId phải là số!" });
     }
 
     if (!isValidEmail(Email)) {
       return res.status(400).json({ error: "Email không hợp lệ!" });
     }
-
-    const checkRoleSql = "SELECT RoleId FROM roles WHERE RoleId = ?";
-    const roleResult = await db.query(checkRoleSql, {
-      replacements: [roleIdNum],
-      type: QueryTypes.SELECT,
-    });
 
     const checkEmailSql = "SELECT Email FROM users WHERE Email = ?";
     const emailResult = await db.query(checkEmailSql, {
@@ -38,8 +27,10 @@ const register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(Password, 10);
+    const roleIdNum = 2;
 
-    const sql = "INSERT INTO users (Username, Password, Email, CardNumber, RoleId) VALUES (?, ?, ?, ?, ?)";
+    const sql =
+      "INSERT INTO users (Username, Password, Email, CardNumber, RoleId) VALUES (?, ?, ?, ?, ?)";
     await db.query(sql, {
       replacements: [Username, hashedPassword, Email, CardNumber, roleIdNum],
       type: QueryTypes.INSERT,

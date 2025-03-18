@@ -21,6 +21,6 @@ router.get('/demo', (req, res) => {
   router.get('/register', (req, res) => {
     res.render('register.ejs')
   });
-  router.get("/register", register);
+  router.post("/register", register);
 
 module.exports = router;
