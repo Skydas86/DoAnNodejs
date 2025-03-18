@@ -491,5 +491,21 @@
     });
 });
     </script>
+    <script>
+        fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Email, Password }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.success) {
+            window.location.replace("/");
+            } else {
+            alert(data.error);
+            }
+        });
+    </script>
+    
 </body>
 </html>

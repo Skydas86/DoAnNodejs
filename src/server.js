@@ -3,10 +3,16 @@ const express = require("express");
 const cors = require("cors");
 const configViewEngine = require("./router/viewEngine");
 const webRoutes = require("./router/web");
-//const authRoutes = require("./router/authRoutes");
-
 const app = express();
 const port = process.env.PORT || 8080;
+const session = require('express-session');
+
+app.use(session({
+  secret: 'your_secret_key',   
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } 
+}));
 
 configViewEngine(app);
 app.use(express.json());

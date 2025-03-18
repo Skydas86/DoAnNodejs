@@ -65,7 +65,12 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="topbar-links">
-                                                <a href="/login"><i class="fa fa-lock"></i>Login / Register</a>
+                                                <% if (user) { %>
+                                                  <span>Xin chào, <strong><%= user.Username %></strong>!</span>
+                                                  <a href="/logout-confirm"><i class="fa fa-sign-out"></i> Logout</a>
+                                                <% } else { %>
+                                                  <a href="/login"><i class="fa fa-lock"></i> Login / Register</a>
+                                                <% } %>
                                                 <span>|</span>
                                                 <div class="header-cart dropdown">
                                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -1922,8 +1927,12 @@
         
         <!-- Custom Scripts -->
         <script type="text/javascript" src="js/main.js"></script>
+        <script>
+            window.history.pushState(null, "", window.location.href);
+            window.onpopstate = function () {
+            window.history.pushState(null, "", window.location.href);
+        };
+        </script>
         
     </body>
-
-
 </html>

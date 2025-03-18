@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken"); // Import thư viện jsonwebtoken
+const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 const { QueryTypes } = require("sequelize");
 
@@ -62,7 +62,6 @@ const login = async (req, res) => {
   try {
     const { Email, Password } = req.body;
 
-    // Kiểm tra dữ liệu đầu vào
     if (!Email || !Password) {
       return res.status(400).json({ error: "Vui lòng nhập email và mật khẩu!" });
     }
@@ -74,18 +73,22 @@ const login = async (req, res) => {
       type: QueryTypes.SELECT,
     });
 
-    // Kiểm tra xem email có tồn tại không
     if (userResult.length === 0) {
       return res.status(400).json({ error: "Email không tồn tại!" });
     }
 
     const user = userResult[0];
 
-    // So sánh mật khẩu
     const isMatch = await bcrypt.compare(Password, user.Password);
     if (!isMatch) {
       return res.status(400).json({ error: "Mật khẩu không đúng!" });
     }
+    
+    if (!req.session) {
+      return res.status(500).json({ error: "Session chưa được khởi tạo!" });
+    }
+    
+    req.session.user = user; // ✅ Đảm bảo req.session tồn tại trước khi gán
 
     // Tạo token JWT
     const token = jwt.sign(
@@ -95,11 +98,12 @@ const login = async (req, res) => {
     );
 
     // Phản hồi thành công
-    res.json({ message: "Đăng nhập thành công!", token });
+    // res.json({ success: true });
+    res.json({ message: "Đăng nhập thành công!", token , success: true, redirect: "/" });
+
   } catch (error) {
     console.error("Lỗi Server:", error);
 
-    // Phản hồi lỗi chi tiết hơn
     if (error.name === "SequelizeConnectionError") {
       return res.status(500).json({ error: "Lỗi kết nối cơ sở dữ liệu!" });
     }
@@ -108,4 +112,19 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const getUserSession = (req, res) => {
+  if (req.session.user) {
+    return res.json({ user: req.session.user });
+  } else {
+    return res.status(401).json({ error: "Người dùng chưa đăng nhập!" });
+  }
+};
+
+const requireAuth = (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect("/"); 
+  }
+  next();
+};
+
+module.exports = { register, login, getUserSession, requireAuth};
