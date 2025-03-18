@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+</head>
+<body>
+    <h2>Form Đăng Ký</h2>
+    <form id="registerForm">
+        <input type="text" id="Username" placeholder="Tên đăng nhập" required><br>
+        <input type="password" id="password" placeholder="Mật khẩu" required><br>
+        <input type="email" id="email" placeholder="Email" required><br>
+        <input type="text" id="cardNumber" placeholder="Số thẻ" required><br>
+        
+        <label for="roleId">Chọn vai trò:</label>
+        <select id="roleId" required>
+            <option value="" disabled selected>Chọn vai trò</option>
+            <option value="1">Admin</option>
+            <option value="2">User</option>
+            <option value="3">Moderator</option>
+        </select>
+        <br>
+
+        <button type="submit">Đăng Ký</button>
+    </form>
+    
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("Username").value;
+            const password = document.getElementById("password").value;
+            const email = document.getElementById("email").value;
+            const cardNumber = document.getElementById("cardNumber").value;
+            const roleId = document.getElementById("roleId").value;
+
+            // Kiểm tra roleId đã được chọn hay chưa
+            if (!roleId) {
+                document.getElementById("message").textContent = "Vui lòng chọn vai trò!";
+                return;
+            }
+
+            console.log("📌 RoleId được gửi:", roleId); // Kiểm tra trên console
+
+            try {
+                const response = await fetch("http://localhost:3000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        Username: username, 
+                        Password: password, 
+                        Email: email, 
+                        CardNumber: cardNumber, 
+                        RoleId: roleId 
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Lỗi kết nối đến server");
+                }
+
+                const result = await response.json();
+                document.getElementById("message").textContent = result.message || result.error;
+            } catch (error) {
+                console.error("Lỗi:", error);
+                document.getElementById("message").textContent = "Không thể kết nối đến server!";
+            }
+        });
+    </script>
+</body>
+</html>
