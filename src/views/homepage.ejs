@@ -1932,6 +1932,22 @@
             window.onpopstate = function () {
             window.history.pushState(null, "", window.location.href);
         };
+        document.addEventListener('DOMContentLoaded', function() {
+  // Check if user is logged in (you'll need to adapt this to your auth method)
+  const isLoggedIn = document.querySelector('.topbar-links span strong') !== null;
+  
+  if (isLoggedIn) {
+    // Replace the current history entry with the current URL
+    // This effectively removes the login page from history
+    window.history.replaceState(null, document.title, window.location.href);
+    
+    // Add event listener for back button
+    window.addEventListener('popstate', function(event) {
+      // Redirect to homepage instead of going back to login
+      window.location.href = '/';
+    });
+  }
+});
         </script>
         
     </body>

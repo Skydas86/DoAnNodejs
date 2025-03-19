@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
 
-
 //test
 router.get('/demo2', ABC );
 router.get('/demo', (req, res) => {
@@ -16,6 +15,9 @@ router.get('/demo', (req, res) => {
 
   router.post("/login", login);
   router.get("/login", requireAuth, (req, res) => {
+    if (req.session.user) {
+      return res.redirect("/"); // Chuyển hướng nếu đã đăng nhập
+    }
     res.render("login");
   });
   
