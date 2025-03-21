@@ -461,6 +461,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     });
 
     const data = await response.json();
+    localStorage.setItem('token', data.token);
     if (!response.ok) throw new Error(data.error || 'Đăng nhập thất bại!');
 
     localStorage.setItem('token', data.token);

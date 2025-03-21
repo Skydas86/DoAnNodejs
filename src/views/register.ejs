@@ -459,7 +459,7 @@
             signUpBtn.disabled = true;
 
             try {
-                const response = await fetch("http://localhost:3000/register", {
+                const response = await fetch("/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ 
@@ -476,6 +476,7 @@
                 signUpBtn.disabled = false;
 
                 if (!response.ok) {
+                    console.log(response);
                     throw new Error("Lỗi kết nối đến server");
                 }
 
