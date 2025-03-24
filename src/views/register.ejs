@@ -503,7 +503,7 @@
                 signUpBtn.disabled = false;
                 
                 console.error("Lỗi:", error);
-                messageElement.textContent = "Tài Khoản đã tồn tại!";
+                messageElement.textContent = error;
                 messageElement.className = "error-message";
             }
         });
