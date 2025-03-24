@@ -83,11 +83,11 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: "Mật khẩu không đúng!" });
     }
-    
+
     if (!req.session) {
       return res.status(500).json({ error: "Session chưa được khởi tạo!" });
     }
-    
+
     req.session.user = user; // ✅ Đảm bảo req.session tồn tại trước khi gán
 
     // Tạo token JWT
@@ -99,7 +99,7 @@ const login = async (req, res) => {
 
     // Phản hồi thành công
     // res.json({ success: true });
-    res.json({ message: "Đăng nhập thành công!", token , success: true, redirect: "/" });
+    res.json({ message: "Đăng nhập thành công!", token, success: true, redirect: "/" });
 
   } catch (error) {
     console.error("Lỗi Server:", error);
@@ -128,4 +128,4 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-module.exports = { register, login, getUserSession, requireAuth};
+module.exports = { register, login, getUserSession, requireAuth };
