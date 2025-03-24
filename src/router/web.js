@@ -1,4 +1,3 @@
-const {ABC, getUsers} = require('../controllers/homeController')
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
@@ -6,11 +5,6 @@ const { renderDashboard } = require('../controllers/adminController');
 
 
 router.use('/api', require('./api'));
-//test
-router.get('/demo2', ABC );
-router.get('/demo', (req, res) => {
-    res.render('sample.ejs')
-  });
   
   router.get("/", (req, res) => {
     res.render("homepage.ejs", { user: req.session.user || null });
@@ -19,9 +13,9 @@ router.get('/demo', (req, res) => {
   router.get('/dashboard', renderDashboard);
 
   router.post("/login", login);
-  router.get("/login", requireAuth, (req, res) => {
+  router.get("/login", requireAuth, (req, res) => { 
     if (req.session.user) {
-      return res.redirect("/"); // Chuyển hướng nếu đã đăng nhập
+      return res.redirect("/"); 
     }
     res.render("login");
   });

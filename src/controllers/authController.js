@@ -28,9 +28,9 @@ const register = async (req, res) => {
       type: QueryTypes.SELECT,
     });
 
-    if (roleResult.length === 0) {
-      return res.status(400).json({ error: "RoleId không hợp lệ!" });
-    }
+    // if (roleResult.length === 0) {
+    //   return res.status(400).json({ error: "RoleId không hợp lệ!" });
+    // }
 
     const checkEmailSql = "SELECT Email FROM users WHERE Email = ?";
     const emailResult = await db.query(checkEmailSql, {
