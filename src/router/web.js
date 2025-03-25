@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 const {ABC, getUsers, renderBooksPage} = require('../controllers/homeController')
->>>>>>> 95e25e9f20e8f7ecb98ddfecb104cfc231b37369
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");

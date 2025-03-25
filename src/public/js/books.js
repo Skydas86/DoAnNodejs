@@ -1,94 +1,48 @@
+
 // Book data
-const booksData = [
-    {
-        id: 1,
-        title: 'The Missing Piece',
-        author: 'John Smith',
-        coverImage: 'placeholder.svg',
-        category: 'Fiction',
-        rating: 4.5,
-        year: 2023,
-        available: true,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    },
-    {
-        id: 2,
-        title: 'Sonic Boom',
-        author: 'Maria Johnson',
-        coverImage: 'placeholder.svg',
-        category: 'Science',
-        rating: 4.2,
-        year: 2022,
-        available: true,
-        description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-        id: 3,
-        title: 'E. Scott Fitzgerald',
-        author: 'Biography Press',
-        coverImage: 'placeholder.svg',
-        category: 'Biography',
-        rating: 4.8,
-        year: 2021,
-        available: false,
-        description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-    },
-    {
-        id: 4,
-        title: 'World History Encyclopedia',
-        author: 'Academic Publishing',
-        coverImage: 'placeholder.svg',
-        category: 'History',
-        rating: 4.6,
-        year: 2020,
-        available: true,
-        description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    },
-    {
-        id: 5,
-        title: 'The Art of Cooking',
-        author: 'Chef Julia',
-        coverImage: 'placeholder.svg',
-        category: 'Cooking',
-        rating: 4.3,
-        year: 2023,
-        available: true,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    },
-    {
-        id: 6,
-        title: 'Digital Marketing Essentials',
-        author: 'Mark Thompson',
-        coverImage: 'placeholder.svg',
-        category: 'Business',
-        rating: 4.1,
-        year: 2022,
-        available: true,
-        description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-        id: 7,
-        title: 'The Psychology of Success',
-        author: 'Dr. Sarah Williams',
-        coverImage: 'placeholder.svg',
-        category: 'Psychology',
-        rating: 4.7,
-        year: 2021,
-        available: false,
-        description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-    },
-    {
-        id: 8,
-        title: 'Exploring the Universe',
-        author: 'Neil Armstrong',
-        coverImage: 'placeholder.svg',
-        category: 'Science',
-        rating: 4.9,
-        year: 2023,
-        available: true,
-        description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    }
-];
+var booksData = [];
+let currentPage = 1;
+const booksPerPage = 4; 
+
+const renderCategory = () => {
+    fetch('/api/category')
+        .then(res => res.json())
+        .then(categories => {
+            let categoriesHTML = Array.from(categories).map(category => {
+                return `<div class="filter-option">
+                            <input type="checkbox" id="${category.CategoryName}" class="category-filter">
+                            <label for="${category.CategoryName}">${category.CategoryName}</label>
+                        </div>`;
+            });
+            
+            document.getElementById('category-options').innerHTML = categoriesHTML.join(' ');
+        })
+        .catch(error => console.log(error));
+}
+
+const renderBook = () => {
+    fetch('/api/book')
+        .then(res => res.json())
+        .then(books => {
+            booksData = books.map(book => ({
+                id: book.BookId,
+                title: book.Title,
+                author: book.Author,
+                coverImage: book.Image,
+                category: book.Categories.map(category => category.CategoryName).join(', '),
+                year: book.Year,
+                available: book.Stock > 0,
+                description: book.Title
+            }));
+
+            currentPage = 1;
+            applyFiltersAndSort();
+        })
+        .catch(error => console.log(error));
+};
+
+renderCategory();
+renderBook();
 
 // DOM Elements
 const booksContainer = document.getElementById('books-container');
@@ -226,13 +180,12 @@ function collectActiveFilters() {
     });
 }
 
-// Apply filters and sort
 function applyFiltersAndSort() {
     let filteredBooks = booksData;
 
     // Apply search query
     if (searchQuery) {
-        filteredBooks = filteredBooks.filter(book => 
+        filteredBooks = filteredBooks.filter(book =>
             book.title.toLowerCase().includes(searchQuery) ||
             book.author.toLowerCase().includes(searchQuery) ||
             book.category.toLowerCase().includes(searchQuery)
@@ -242,7 +195,7 @@ function applyFiltersAndSort() {
     // Apply category filters
     if (activeFilters.categories.length > 0) {
         filteredBooks = filteredBooks.filter(book => 
-            activeFilters.categories.includes(book.category.toLowerCase())
+            book.category.split(', ').some(cat => activeFilters.categories.includes(cat))
         );
     }
 
@@ -273,7 +226,7 @@ function applyFiltersAndSort() {
             } else if (activeFilters.ratings.includes('2')) {
                 return book.rating >= 2;
             }
-            return true; // Any rating
+            return true;
         });
     }
 
@@ -299,14 +252,126 @@ function applyFiltersAndSort() {
     // Update results count
     resultsNumber.textContent = filteredBooks.length;
 
-    // Render filtered books
-    renderBooks(filteredBooks);
+    // Render pagination
+    renderPagination(filteredBooks.length);
+
+    // Get current page books
+    const indexOfLastBook = currentPage * booksPerPage;
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+    const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
+
+    // Render filtered books for current page
+    renderBooks(currentBooks);
 }
 
-// Set view mode (grid or list)
+function renderPagination(totalBooks) {
+    const pageCount = Math.ceil(totalBooks / booksPerPage);
+    const paginationContainer = document.querySelector('.pagination');
+    paginationContainer.innerHTML = '';
+
+    if (pageCount <= 1) return;
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.classList.add('pagination-btn');
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            applyFiltersAndSort();
+        }
+    });
+    paginationContainer.appendChild(prevButton);
+
+    const maxVisiblePages = 5; 
+    let startPage, endPage;
+
+    if (pageCount <= maxVisiblePages) {
+        startPage = 1;
+        endPage = pageCount;
+    } else {
+        const maxPagesBeforeCurrent = Math.floor(maxVisiblePages / 2);
+        const maxPagesAfterCurrent = Math.ceil(maxVisiblePages / 2) - 1;
+        
+        if (currentPage <= maxPagesBeforeCurrent) {
+            startPage = 1;
+            endPage = maxVisiblePages;
+        } else if (currentPage + maxPagesAfterCurrent >= pageCount) {
+            startPage = pageCount - maxVisiblePages + 1;
+            endPage = pageCount;
+        } else {
+            startPage = currentPage - maxPagesBeforeCurrent;
+            endPage = currentPage + maxPagesAfterCurrent;
+        }
+    }
+
+    // Nút trang đầu tiên
+    if (startPage > 1) {
+        const firstPageButton = document.createElement('button');
+        firstPageButton.textContent = '1';
+        firstPageButton.classList.add('pagination-btn');
+        firstPageButton.addEventListener('click', () => {
+            currentPage = 1;
+            applyFiltersAndSort();
+        });
+        paginationContainer.appendChild(firstPageButton);
+
+        if (startPage > 2) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            ellipsis.classList.add('pagination-ellipsis');
+            paginationContainer.appendChild(ellipsis);
+        }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.classList.add('pagination-btn');
+        if (i === currentPage) {
+            pageButton.classList.add('active');
+        }
+        pageButton.addEventListener('click', () => {
+            currentPage = i;
+            applyFiltersAndSort();
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    if (endPage < pageCount) {
+        if (endPage < pageCount - 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            ellipsis.classList.add('pagination-ellipsis');
+            paginationContainer.appendChild(ellipsis);
+        }
+
+        const lastPageButton = document.createElement('button');
+        lastPageButton.textContent = pageCount;
+        lastPageButton.classList.add('pagination-btn');
+        lastPageButton.addEventListener('click', () => {
+            currentPage = pageCount;
+            applyFiltersAndSort();
+        });
+        paginationContainer.appendChild(lastPageButton);
+    }
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.classList.add('pagination-btn');
+    nextButton.disabled = currentPage === pageCount;
+    nextButton.addEventListener('click', () => {
+        if (currentPage < pageCount) {
+            currentPage++;
+            applyFiltersAndSort();
+        }
+    });
+    paginationContainer.appendChild(nextButton);
+}
+
 function setViewMode(mode) {
     currentView = mode;
-    
+
     if (mode === 'grid') {
         booksContainer.className = 'books-grid';
         gridViewBtn.classList.add('active');
@@ -316,7 +381,7 @@ function setViewMode(mode) {
         listViewBtn.classList.add('active');
         gridViewBtn.classList.remove('active');
     }
-    
+
     // Re-render with current data
     applyFiltersAndSort();
 }
@@ -324,7 +389,7 @@ function setViewMode(mode) {
 // Render books
 function renderBooks(books) {
     booksContainer.innerHTML = '';
-    
+
     if (books.length === 0) {
         booksContainer.innerHTML = `
             <div class="no-results">
@@ -334,7 +399,7 @@ function renderBooks(books) {
         `;
         return;
     }
-    
+
     if (currentView === 'grid') {
         books.forEach(book => {
             booksContainer.appendChild(createBookCard(book));
@@ -350,7 +415,7 @@ function renderBooks(books) {
 function createBookCard(book) {
     const bookCard = document.createElement('div');
     bookCard.className = 'book-card';
-    
+
     bookCard.innerHTML = `
         <div class="book-cover">
             <img src="${book.coverImage}" alt="${book.title}">
@@ -361,10 +426,6 @@ function createBookCard(book) {
         <div class="book-details">
             <div class="book-meta">
                 <span class="book-category">${book.category}</span>
-                <span class="book-rating">
-                    <i class="fas fa-star"></i>
-                    ${book.rating}
-                </span>
             </div>
             <h3 class="book-title">${book.title}</h3>
             <p class="book-author">by ${book.author}</p>
@@ -377,7 +438,7 @@ function createBookCard(book) {
             </div>
         </div>
     `;
-    
+
     return bookCard;
 }
 
@@ -385,7 +446,7 @@ function createBookCard(book) {
 function createBookListItem(book) {
     const bookListItem = document.createElement('div');
     bookListItem.className = 'book-list-item';
-    
+
     bookListItem.innerHTML = `
         <div class="book-list-cover">
             <img src="${book.coverImage}" alt="${book.title}">
@@ -396,10 +457,6 @@ function createBookListItem(book) {
                 <div class="book-badge ${book.available ? 'badge-available' : 'badge-unavailable'}">
                     ${book.available ? 'Available' : 'Unavailable'}
                 </div>
-                <span class="book-rating">
-                    <i class="fas fa-star"></i>
-                    ${book.rating}
-                </span>
             </div>
             <h3 class="book-list-title">${book.title}</h3>
             <p class="book-author">by ${book.author}</p>
@@ -413,6 +470,6 @@ function createBookListItem(book) {
             </div>
         </div>
     `;
-    
+
     return bookListItem;
 }

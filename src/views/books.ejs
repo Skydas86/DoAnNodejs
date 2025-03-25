@@ -23,40 +23,12 @@
 </head>
 <body>
     <!-- Header -->
-    <!-- <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="placeholder.svg" alt="Libraria Logo" width="150">
-                    </a>
-                </div>
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="books.html" class="active">Books</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="header-actions">
-                    <a href="#" class="btn btn-outline">Login</a>
-                    <a href="#" class="btn btn-primary">Sign Up</a>
-                </div>
-                <button class="mobile-menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </header> -->
     <%- include("header") %>
 
-    <div data-ride="carousel" class="carousel slide" id="home-v1-header-carousel" style="height: 550px;">
+    <div data-ride="carousel" class="carousel slide" id="home-v1-header-carousel" style="height: 600px;">
 
         <!-- Carousel slides -->
-        <div class="carousel-inner" style="height: 550px;">
+        <div class="carousel-inner" style="height: 600px;">
             <div class="item active">
                 <figure>
                     <img alt="Home Slide" src="images/header-slider/home-v1/header-slide.jpg" />
@@ -155,7 +127,6 @@
                             <option value="oldest">Oldest</option>
                             <option value="a-z">Title (A-Z)</option>
                             <option value="z-a">Title (Z-A)</option>
-                            <option value="rating">Highest Rating</option>
                         </select>
                     </div>
                     
@@ -175,35 +146,8 @@
                 <div class="filters-grid">
                     <div class="filter-group">
                         <h3>Categories</h3>
-                        <div class="filter-options">
-                            <div class="filter-option">
-                                <input type="checkbox" id="fiction" class="category-filter">
-                                <label for="fiction">Fiction</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="science" class="category-filter">
-                                <label for="science">Science</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="biography" class="category-filter">
-                                <label for="biography">Biography</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="history" class="category-filter">
-                                <label for="history">History</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="business" class="category-filter">
-                                <label for="business">Business</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="cooking" class="category-filter">
-                                <label for="cooking">Cooking</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="psychology" class="category-filter">
-                                <label for="psychology">Psychology</label>
-                            </div>
+                        <div class="filter-options" id="category-options">
+                            <!-- Categories -->
                         </div>
                     </div>
                     
@@ -247,27 +191,6 @@
                         </div>
                     </div>
                     
-                    <div class="filter-group">
-                        <h3>Rating</h3>
-                        <div class="filter-options">
-                            <div class="filter-option">
-                                <input type="checkbox" id="rating-4" class="rating-filter">
-                                <label for="rating-4">4 & Above</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="rating-3" class="rating-filter">
-                                <label for="rating-3">3 & Above</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="rating-2" class="rating-filter">
-                                <label for="rating-2">2 & Above</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="rating-any" class="rating-filter">
-                                <label for="rating-any">Any Rating</label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="filter-actions">
