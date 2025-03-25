@@ -3,7 +3,7 @@ const secretKey = process.env.JWT_SECRET;
 const { User, Role } = require('../models');
 
 const AuthMiddleware = async (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
+    const token = req.headers.authorization?.split(' ')[1]; 
 
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
