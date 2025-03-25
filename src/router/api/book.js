@@ -1,6 +1,5 @@
 const express = require('express');
 const bookController = require('../../controllers/api/bookController');
-const upload = require('../../middlewares/uploadService');
 const IsAdmin = require('../../middlewares/IsAdmin');
 const router = express.Router();
 

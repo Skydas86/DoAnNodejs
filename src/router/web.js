@@ -1,4 +1,4 @@
-const {ABC, getUsers} = require('../controllers/homeController')
+const {ABC, getUsers, renderBooksPage} = require('../controllers/homeController')
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
@@ -22,6 +22,7 @@ router.get('/demo', (req, res) => {
   router.get('/dashboard/member' , renderDashboardMember);
   router.get('/dashboard/book/add', renderAddBook);
   router.get('/dashboard/book/edit/:id', renderEditBook);
+  router.get('/books', renderBooksPage);
 
   router.post("/login", login);
   router.get("/login", requireAuth, (req, res) => {
