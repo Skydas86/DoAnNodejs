@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,292 +9,193 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-book-open"></i>
-                    <span>LibraryAdmin</span>
-                </div>
-                <button class="sidebar-close" id="sidebar-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="sidebar-content">
-                <div class="sidebar-group">
-                    <h3 class="sidebar-group-title">Main Menu</h3>
-                    <ul class="sidebar-menu">
-                        <li class="sidebar-menu-item">
-                            <a href="index.html">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-menu-item active">
-                            <a href="books.html">
-                                <i class="fas fa-book"></i>
-                                <span>Books</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-menu-item">
-                            <a href="members.html">
-                                <i class="fas fa-users"></i>
-                                <span>Members</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-menu-item">
-                            <a href="borrowings.html">
-                                <i class="fas fa-exchange-alt"></i>
-                                <span>Borrowings</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="sidebar-group">
-                    <h3 class="sidebar-group-title">Administration</h3>
-                    <ul class="sidebar-menu">
-                        <li class="sidebar-menu-item">
-                            <a href="staff.html">
-                                <i class="fas fa-user-tie"></i>
-                                <span>Staff</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-menu-item">
-                            <a href="settings.html">
-                                <i class="fas fa-cog"></i>
-                                <span>Settings</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <img src="https://via.placeholder.com/40" alt="Admin User">
-                    </div>
-                    <div class="user-details">
-                        <span class="user-name">Admin User</span>
-                        <span class="user-email">admin@library.com</span>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        <%- include("sideBar") %>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-left">
-                    <button class="sidebar-toggle" id="sidebar-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="search-container">
-                        <i class="fas fa-search"></i>
-                        <input type="search" placeholder="Search books by title, author, ISBN...">
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Header -->
+                <!-- <%- include("header") %> -->
+
+                <!-- Content Area -->
+                <div class="content">
+                    <div class="page-header">
+                        <h1>Books Management</h1>
+                        <p>Manage your library's book collection</p>
                     </div>
-                </div>
-                <div class="header-right">
-                    <div class="user-dropdown">
-                        <button class="user-dropdown-toggle">
-                            <img src="https://via.placeholder.com/32" alt="Admin User">
-                        </button>
-                        <div class="user-dropdown-menu">
-                            <div class="user-dropdown-header">
-                                <span class="user-name">Admin User</span>
-                                <span class="user-email">admin@library.com</span>
+
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <div class="action-bar-left">
+                            <div class="search-container">
+                                <i class="fas fa-search"></i>
+                                <input type="search" placeholder="Search books by title, author, ISBN...">
                             </div>
-                            <ul>
-                                <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-                                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-                            </ul>
                         </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Content Area -->
-            <div class="content">
-                <div class="page-header">
-                    <h1>Books Management</h1>
-                    <p>Manage your library's book collection</p>
-                </div>
-
-                <!-- Action Bar -->
-                <div class="action-bar">
-                    <div class="action-bar-left">
-                        <div class="search-container">
-                            <i class="fas fa-search"></i>
-                            <input type="search" placeholder="Search books by title, author, ISBN...">
-                        </div>
-                    </div>
-                    <div class="action-bar-right">
-                        <div class="dropdown">
-                            <button class="btn btn-outline dropdown-toggle">
-                                <i class="fas fa-filter"></i>
-                                <span>Filter</span>
+                        <div class="action-bar-right">
+                            <div class="dropdown">
+                                <button class="btn btn-outline dropdown-toggle">
+                                    <i class="fas fa-filter"></i>
+                                    <span>Filter</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a href="#">All Books</a>
+                                    <a href="#">Available</a>
+                                    <a href="#">Borrowed</a>
+                                    <a href="#">Recently Added</a>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-download"></i>
+                                <span>Export</span>
                             </button>
-                            <div class="dropdown-menu">
-                                <a href="#">All Books</a>
-                                <a href="#">Available</a>
-                                <a href="#">Borrowed</a>
-                                <a href="#">Recently Added</a>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <a href="/dashboard/book/add">Add Book</a>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Books Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Book Collection</h2>
+                            <p>Manage and view all books in your library</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>Image</th>
+                                            <th>Category</th>
+                                            <th>Stock</th>
+                                            <th>Released Year</th>
+                                            <th class="text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="book-table">
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <button class="btn btn-outline">
-                            <i class="fas fa-download"></i>
-                            <span>Export</span>
-                        </button>
-                        <button class="btn btn-primary">
-                            <i class="fas fa-plus"></i>
-                            <span>Add Book</span>
-                        </button>
                     </div>
                 </div>
-
-                <!-- Books Table -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Book Collection</h2>
-                        <p>Manage and view all books in your library</p>
-                    </div>
-                    <div class="card-content">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>ISBN</th>
-                                        <th>Category</th>
-                                        <th>Status</th>
-                                        <th>Added Date</th>
-                                        <th class="text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-medium">To Kill a Mockingbird</td>
-                                        <td>Harper Lee</td>
-                                        <td>978-0-06-112008-4</td>
-                                        <td>Fiction</td>
-                                        <td><span class="badge badge-success">Available</span></td>
-                                        <td>Jan 15, 2023</td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <button class="btn-icon dropdown-toggle">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#">View Details</a>
-                                                    <a href="#">Edit Book</a>
-                                                    <a href="#">Mark as Borrowed</a>
-                                                    <a href="#">Mark as Available</a>
-                                                    <a href="#" class="text-danger">Delete Book</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium">1984</td>
-                                        <td>George Orwell</td>
-                                        <td>978-0-452-28423-4</td>
-                                        <td>Science Fiction</td>
-                                        <td><span class="badge badge-danger">Borrowed</span></td>
-                                        <td>Feb 3, 2023</td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <button class="btn-icon dropdown-toggle">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#">View Details</a>
-                                                    <a href="#">Edit Book</a>
-                                                    <a href="#">Mark as Borrowed</a>
-                                                    <a href="#">Mark as Available</a>
-                                                    <a href="#" class="text-danger">Delete Book</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium">The Great Gatsby</td>
-                                        <td>F. Scott Fitzgerald</td>
-                                        <td>978-0-7432-7356-5</td>
-                                        <td>Fiction</td>
-                                        <td><span class="badge badge-success">Available</span></td>
-                                        <td>Mar 12, 2023</td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <button class="btn-icon dropdown-toggle">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#">View Details</a>
-                                                    <a href="#">Edit Book</a>
-                                                    <a href="#">Mark as Borrowed</a>
-                                                    <a href="#">Mark as Available</a>
-                                                    <a href="#" class="text-danger">Delete Book</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium">Pride and Prejudice</td>
-                                        <td>Jane Austen</td>
-                                        <td>978-0-14-143951-8</td>
-                                        <td>Romance</td>
-                                        <td><span class="badge badge-success">Available</span></td>
-                                        <td>Apr 5, 2023</td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <button class="btn-icon dropdown-toggle">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#">View Details</a>
-                                                    <a href="#">Edit Book</a>
-                                                    <a href="#">Mark as Borrowed</a>
-                                                    <a href="#">Mark as Available</a>
-                                                    <a href="#" class="text-danger">Delete Book</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium">The Catcher in the Rye</td>
-                                        <td>J.D. Salinger</td>
-                                        <td>978-0-316-76948-0</td>
-                                        <td>Fiction</td>
-                                        <td><span class="badge badge-danger">Borrowed</span></td>
-                                        <td>May 20, 2023</td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <button class="btn-icon dropdown-toggle">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#">View Details</a>
-                                                    <a href="#">Edit Book</a>
-                                                    <a href="#">Mark as Borrowed</a>
-                                                    <a href="#">Mark as Available</a>
-                                                    <a href="#" class="text-danger">Delete Book</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+            </main>
     </div>
 
     <script src="/js/admin.js"></script>
+    <script>
+        let bookList = [];
+
+        const renderBook = () => {
+            fetch("/api/book", {
+                method: "GET",
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        alert(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(books => {
+                    bookList = books; // Lưu danh sách sách vào biến
+                    displayBooks(books);
+                })
+                .catch(error => console.error("Error fetching books:", error));
+        };
+
+        const displayBooks = (books) => {
+            const tableBody = document.getElementById("book-table");
+            tableBody.innerHTML = "";
+
+            books.forEach(book => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                <td class="font-medium">${book.Title}</td>
+                <td>${book.Author}</td>
+                <td>
+                    <img src="/${book.Image}" alt="Book Cover" style="width: 50px; height: auto; border-radius: 5px;">
+                </td>
+                <td>${book.Categories && book.Categories.length > 0
+                        ? book.Categories.map(c => c.CategoryName).join(", ")
+                        : "Unknown"}
+                </td>
+                <td>
+                    <span class="badge ${book.Stock > 0 ? 'badge-success' : 'badge-danger'}">
+                        ${book.Stock > 0 ? book.Stock : 'Hết hàng'}
+                    </span>
+                </td>
+                <td>${book.Year}</td>
+                <td class="text-right">
+                    <a href="#">View Details</a> <br/>
+                    <a href="/dashboard/book/edit/${book.BookId}}">Edit Book</a> <br/>
+                    <a href="#" class="text-danger delete-book" data-id="${book.BookId}">Delete Book</a>
+                </td>
+            `;
+
+                tableBody.appendChild(row);
+            });
+        };
+
+        const filterBooks = (searchTerm) => {
+            const filteredBooks = bookList.filter(book =>
+                book.Title.toLowerCase().includes(searchTerm) ||
+                book.Author.toLowerCase().includes(searchTerm) ||
+                (book.ISBN && book.ISBN.toLowerCase().includes(searchTerm))
+            );
+            displayBooks(filteredBooks);
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderBook();
+
+            document.querySelector(".search-container input").addEventListener("input", (event) => {
+                const searchTerm = event.target.value.toLowerCase();
+                filterBooks(searchTerm);
+            });
+
+            document.addEventListener("click", async (event) => {
+                if (event.target.classList.contains("delete-book")) {
+                    event.preventDefault();
+
+                    const bookId = event.target.getAttribute("data-id");
+                    if (!bookId) return;
+
+                    const confirmDelete = confirm("Bạn có chắc muốn xóa sách này?");
+                    if (!confirmDelete) return;
+
+                    try {
+                        const response = await fetch(`/api/book/${bookId}`, {
+                            method: "DELETE",
+                            headers: {
+                                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                            }
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            event.target.closest("tr").remove();
+                        } else {
+                            alert(`Lỗi: ${result.error || "Có lỗi xảy ra!"}`);
+                        }
+                    } catch (error) {
+                        alert("Lỗi kết nối đến server!");
+                        console.error("Delete Error:", error);
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
+
 </html>

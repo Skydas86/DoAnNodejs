@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
-const { renderDashboard } = require('../controllers/adminController');
+const { renderDashboard, renderDashboardBook, renderDashboardMember, renderAddBook, renderEditBook } = require('../controllers/adminController');
+const IsAdmin = require('../middlewares/IsAdmin');
 
 
 router.use('/api', require('./api'));
@@ -10,7 +11,11 @@ router.use('/api', require('./api'));
     res.render("homepage.ejs", { user: req.session.user || null });
   });
   
-  router.get('/dashboard', renderDashboard);
+  router.get('/dashboard' ,renderDashboard);
+  router.get('/dashboard/book' , renderDashboardBook);
+  router.get('/dashboard/member' , renderDashboardMember);
+  router.get('/dashboard/book/add', renderAddBook);
+  router.get('/dashboard/book/edit/:id', renderEditBook);
 
   router.post("/login", login);
   router.get("/login", requireAuth, (req, res) => { 
