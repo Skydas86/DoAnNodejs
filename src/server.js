@@ -22,13 +22,11 @@ app.use("/register", webRoutes);
 app.use("/login", webRoutes);
 app.use("/getUserSession", webRoutes);
 
-// Middleware xử lý lỗi
 app.use((err, req, res, next) => {
   console.error("Lỗi hệ thống:", err);
   res.status(500).json({ error: "Lỗi hệ thống!" });
 });
 
-// Khởi động server
 app.listen(port, () => {
   console.log(`Server chạy tại http://localhost:${port}`);
 });
