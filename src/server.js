@@ -20,6 +20,7 @@ app.use(cors());
 app.use("/", webRoutes);
 app.use("/register", webRoutes);
 app.use("/login", webRoutes);
+app.use("/getUserSession", webRoutes);
 
 // Middleware xử lý lỗi
 app.use((err, req, res, next) => {

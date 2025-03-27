@@ -31,6 +31,11 @@ router.use('/api', require('./api'));
   router.get('/register', (req, res) => {
     res.render('register.ejs')
   });
+  router.get("/getUserSession",  (req, res) => {
+    res.json({
+        user: req.user
+    });
+});
   
   router.get("/logout-confirm", (req, res) => {
     res.render("logout");
