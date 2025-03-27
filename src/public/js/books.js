@@ -431,7 +431,7 @@ function createBookCard(book) {
             <p class="book-author">by ${book.author}</p>
             <p class="book-year">Published: ${book.year}</p>
             <div class="book-actions">
-                <button class="btn btn-outline" onclick="window.location.href = '/books/${book.id}'">Details</button>
+                <a href="/books/${book.id}" class="btn btn-outline">Details</a>
                 <button class="btn btn-primary" ${!book.available ? 'disabled' : ''}>
                     ${book.available ? 'Borrow' : 'Reserve'}
                 </button>
