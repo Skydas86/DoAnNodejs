@@ -19,6 +19,9 @@ db.Role.hasMany(db.User, { foreignKey: 'RoleId' });
 db.User.hasMany(db.BorrowRecord, { foreignKey: 'UserId' });
 db.BorrowRecord.belongsTo(db.User, { foreignKey: 'UserId' });
 
+db.Book.hasMany(db.BorrowRecord, { foreignKey: 'BookId' });
+db.BorrowRecord.belongsTo(db.Book, { foreignKey: 'BookId' });
+
 db.Book.belongsToMany(db.Category, { through: db.BookCategory });
 db.Category.belongsToMany(db.Book, { through: db.BookCategory });
 

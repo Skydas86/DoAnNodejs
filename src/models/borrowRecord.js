@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     },
     Status: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      defaultValue: 'pending'
     }
   }, {
     tableName: "borrowrecords",

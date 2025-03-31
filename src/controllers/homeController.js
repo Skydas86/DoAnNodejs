@@ -6,4 +6,7 @@ const renderBookDetail = (req, res) => {
     res.render('bookDetail.ejs');
 }
 
-module.exports ={ renderBooksPage, renderBookDetail }
+const renderBookRecord = (req, res) => {
+    res.render('borrowrecords.ejs');
+}
+module.exports ={ renderBooksPage, renderBookDetail, renderBookRecord }

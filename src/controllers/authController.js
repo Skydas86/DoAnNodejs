@@ -55,7 +55,7 @@ const register = async (req, res) => {
     const token = jwt.sign(
         { UserId: UserId, RoleId: roleIdNum, Email: Email },  
         process.env.JWT_SECRET,
-        { expiresIn: "5s" }
+        { expiresIn: "1h" }
     );
     res.status(201).json({ message: "Đăng ký thành công!", token: token }); 
   } catch (error) {
@@ -93,7 +93,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { UserId: user.UserId, RoleId: user.RoleId, Email: user.Email },
       process.env.JWT_SECRET,
-      { expiresIn: "5s" }
+      { expiresIn: "1h" }
     );
     res.json({ message: "Đăng nhập thành công!", token: token, success: true });
 

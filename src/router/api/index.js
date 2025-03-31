@@ -4,5 +4,6 @@ const router = express.Router();
 router.use('/user', require('./user'));
 router.use('/category', require('./category'));
 router.use('/book', require('./book'));
+router.use("/borrowrecords",require('./BorrowRecordRouter'));
 
 module.exports = router;
