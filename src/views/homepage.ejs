@@ -1728,6 +1728,66 @@
                 });
             }
         });
+    //----------------------------------------------------------------------------------------------//
+    // Initialize borrowedBooks in localStorage if it doesn't exist
+    if (!localStorage.getItem('borrowedBooks')) {
+        localStorage.setItem('borrowedBooks', JSON.stringify([]));
+    }
+    
+    // Add event listeners to all borrow buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        const borrowButtons = document.querySelectorAll('.btn-borrow');
+        
+        borrowButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Get book information from the card
+                const card = this.closest('.book-card');
+                const image = card.querySelector('.book-image img').src;
+                const category = card.querySelector('.book-category').textContent;
+                const title = card.querySelector('.book-title').textContent;
+                const authorElement = card.querySelector('.book-author');
+                const author = authorElement ? authorElement.textContent.replace('by ', '') : '';
+                const publishedElement = card.querySelector('.book-published');
+                const published = publishedElement ? publishedElement.textContent.replace('Published: ', '') : '';
+                
+                // Create a unique ID for the book
+                const id = Date.now().toString();
+                
+                // Create book object
+                const book = {
+                    id: id,
+                    image: image,
+                    category: category,
+                    title: title,
+                    author: author,
+                    published: published,
+                    borrowDate: new Date().toISOString()
+                };
+                
+                // Add to borrowed books in localStorage
+                const borrowedBooks = JSON.parse(localStorage.getItem('borrowedBooks')) || [];
+                
+                // Check if book is already borrowed
+                const isAlreadyBorrowed = borrowedBooks.some(b => 
+                    b.title === book.title && b.author === book.author
+                );
+                
+                if (isAlreadyBorrowed) {
+                    alert('You have already borrowed this book!');
+                    return;
+                }
+                
+                borrowedBooks.push(book);
+                localStorage.setItem('borrowedBooks', JSON.stringify(borrowedBooks));
+                
+                // Show success message
+                alert('Book has been borrowed successfully! View it in your Borrowed Books page.');
+                
+                // Optionally redirect to borrowed books page
+                // window.location.href = '/borrowRecord';
+            });
+        });
+    });    
     </script>
 
 </body>

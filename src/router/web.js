@@ -1,4 +1,4 @@
-const { getUsers, renderBooksPage, renderBookDetail} = require('../controllers/homeController')
+const { getUsers, renderBooksPage, renderBookDetail,renderBookRecord} = require('../controllers/homeController')
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
@@ -19,6 +19,7 @@ router.use('/api', require('./api'));
   router.get('/dashboard/book/edit/:id', renderEditBook);
   router.get('/books', renderBooksPage);
   router.get('/books/:id', renderBookDetail);
+  router.get('/borrowrecords', renderBookRecord)
 
   router.post("/login", login);
   router.get("/login", requireAuth, (req, res) => { 
@@ -32,6 +33,11 @@ router.use('/api', require('./api'));
   router.get('/register', (req, res) => {
     res.render('register.ejs')
   });
+  router.get("/getUserSession",  (req, res) => {
+    res.json({
+        user: req.user
+    });
+});
   
   router.get("/logout-confirm", (req, res) => {
     res.render("logout");

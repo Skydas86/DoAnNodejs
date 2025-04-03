@@ -28,9 +28,9 @@ const register = async (req, res) => {
       type: QueryTypes.SELECT,
     });
 
-    // if (roleResult.length === 0) {
-    //   return res.status(400).json({ error: "RoleId không hợp lệ!" });
-    // }
+    if (roleResult.length === 0) {
+      return res.status(400).json({ error: "RoleId không hợp lệ!" });
+    }
 
     const checkEmailSql = "SELECT Email FROM users WHERE Email = ?";
     const emailResult = await db.query(checkEmailSql, {
@@ -46,12 +46,18 @@ const register = async (req, res) => {
 
     const sql =
       "INSERT INTO users (Username, Password, Email, CardNumber, RoleId) VALUES (?, ?, ?, ?, ?)";
-    await db.query(sql, {
+    const [results, metadata] = await db.query(sql, { 
       replacements: [Username, hashedPassword, Email, CardNumber, roleIdNum],
       type: QueryTypes.INSERT,
     });
 
-    res.json({ message: "Đăng ký thành công!" });
+    const UserId = metadata;
+    const token = jwt.sign(
+        { UserId: UserId, RoleId: roleIdNum, Email: Email },  
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
+    res.status(201).json({ message: "Đăng ký thành công!", token: token }); 
   } catch (error) {
     console.error("Lỗi Server:", error);
     res.status(500).json({ error: "Lỗi hệ thống!" });
@@ -84,22 +90,12 @@ const login = async (req, res) => {
       return res.status(400).json({ error: "Mật khẩu không đúng!" });
     }
 
-    if (!req.session) {
-      return res.status(500).json({ error: "Session chưa được khởi tạo!" });
-    }
-
-    req.session.user = user; // ✅ Đảm bảo req.session tồn tại trước khi gán
-
-    // Tạo token JWT
     const token = jwt.sign(
-      { UserId: user.UserId, RoleId: user.RoleId },
-      process.env.JWT_SECRET, // Sử dụng biến môi trường
+      { UserId: user.UserId, RoleId: user.RoleId, Email: user.Email },
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-
-    // Phản hồi thành công
-    // res.json({ success: true });
-    res.json({ message: "Đăng nhập thành công!", token, success: true, redirect: "/" });
+    res.json({ message: "Đăng nhập thành công!", token: token, success: true });
 
   } catch (error) {
     console.error("Lỗi Server:", error);
@@ -113,19 +109,39 @@ const login = async (req, res) => {
 };
 
 const getUserSession = (req, res) => {
-  if (req.session.user) {
-    return res.json({ user: req.session.user });
-  } else {
-    return res.status(401).json({ error: "Người dùng chưa đăng nhập!" });
-  }
+  const token = req.headers.authorization?.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ error: "Không tìm thấy token!" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return res.json({ user: decoded });
+
+    } catch (error) {
+        console.error("Token verification error:", error);
+        return res.status(401).json({ error: "Token không hợp lệ!" });
+    }
+
 };
 
 const requireAuth = (req, res, next) => {
-  if (req.session.user) {
-    // return res.status(403).json({ error: "Bạn đã đăng nhập!" });
-    return res.redirect("/");
-  }
-  next();
+  const token = req.headers.authorization?.split(' ')[1];
+
+    if (!token) {
+      //return res.status(401).json({ error: "Yêu cầu xác thực." });
+      //return res.redirect("/");
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+          //return res.redirect("/login");
+        }
+        req.user = decoded;
+        next();
+    });
 };
+
 
 module.exports = { register, login, getUserSession, requireAuth };

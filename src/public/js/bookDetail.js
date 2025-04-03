@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const bookDetailContainer = document.getElementById("book-detail");
+    const bookDetailContainer = document.getElementById("book-detail-container");
     
     const pathSegments = window.location.pathname.split("/");
     const bookId = pathSegments[pathSegments.length - 1] || 7; 
@@ -20,29 +20,79 @@ document.addEventListener("DOMContentLoaded", function () {
         let categories = book.Categories.map(cat => `<span class='badge badge-info me-1'>${cat.CategoryName}</span>`).join(" ");
         document.title = book.Title;
 
-        let bookHtml = `
-            <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
-                <div class="row g-0">
-                    <div class="col-md-4 d-flex align-items-center justify-content-center bg-light">
-                        <img src="/${book.Image}" class="img-fluid p-3 rounded" alt="${book.Title}">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body p-4">
-                            <h3 class="card-title text-primary fw-bold">${book.Title}</h3>
-                            <p class="card-text mb-1"><strong>Tác giả:</strong> ${book.Author}</p>
-                            <p class="card-text mb-1"><strong>Nhà xuất bản:</strong> ${book.Publisher}</p>
-                            <p class="card-text mb-1"><strong>Năm xuất bản:</strong> ${book.Year}</p>
-                            <p class="card-text mb-1"><strong>Giá:</strong> <span class='text-danger fw-bold'>${book.Price.toLocaleString()} VND</span></p>
-                            <p class="card-text mb-1"><strong>Tồn kho:</strong> ${book.Stock}</p>
-                            <p class="card-text"><strong>Thể loại:</strong> ${categories}</p>
-                            <div class="mt-3">
-                                <a href="/books" class="btn btn-primary me-2">Quay lại danh sách</a>
-                                ${book.Status === "true" ? `<a target="__blank" href="/${book.File}" class="btn btn-success">Xem nội dung sách</a>` : ""}
+        let bookHtml = `<div class="row">
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+                            <div class="booksmedia-detail-box">
+                                <div class="detailed-box">
+                                    <div class="col-xs-12 col-sm-5 col-md-3">
+                                        <div class="post-thumbnail">
+                                            <img src="/${book.Image}"
+                                                alt="Book Image">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-7 col-md-6">
+                                        <div class="post-center-content">
+                                            <h2>${book.Title}</h2>
+                                            <p><strong>Author:</strong> ${book.Author}</p>
+                                            <p><strong>Publisher:</strong> ${book.Publisher}</p>
+                                            <p><strong>Categories: ${categories}</p>
+                                            <div class="actions">
+                                                <ul>
+                                                    <li>
+                                                        <a href="#" target="_blank" data-toggle="blog-tags"
+                                                            data-placement="top" title=""
+                                                            data-original-title="Add To Cart">
+                                                            <i class="fa fa-shopping-cart"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" target="_blank" data-toggle="blog-tags"
+                                                            data-placement="top" title="" data-original-title="Like">
+                                                            <i class="fa fa-heart"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" target="_blank" data-toggle="blog-tags"
+                                                            data-placement="top" title="" data-original-title="Mail">
+                                                            <i class="fa fa-envelope"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" target="_blank" data-toggle="blog-tags"
+                                                            data-placement="top" title="" data-original-title="Search">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" target="_blank" data-toggle="blog-tags"
+                                                            data-placement="top" title="" data-original-title="Print">
+                                                            <i class="fa fa-print"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" target="_blank" data-toggle="blog-tags"
+                                                            data-placement="top" title="" data-original-title="Print">
+                                                            <i class="fa fa-share-alt"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-3 ">
+                                        <div class="post-right-content">
+                                            <h4>Available now</h4>
+                                            <p><strong>Stock:</strong> ${book.Stock}</p>
+                                            ${book.Stock > 0 ? `
+                                            <a href="#." class="btn btn-dark-gray">Borrow</a>` : `<a class="btn btn-dark-gray">Out of Stock</a> `}
+                                            ${book.Status == 'true' ? 
+                                                `<a href="/${book.File}" target="__blank" class="btn btn-dark-gray">View PDF</a>` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>`;
         
         bookDetailContainer.innerHTML = bookHtml;
     }

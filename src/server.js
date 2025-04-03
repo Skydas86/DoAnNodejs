@@ -7,6 +7,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 const session = require('express-session');
 
+
 app.use(session({
   secret: 'your_secret_key',   
   resave: false,
@@ -20,6 +21,7 @@ app.use(cors());
 app.use("/", webRoutes);
 app.use("/register", webRoutes);
 app.use("/login", webRoutes);
+app.use("/getUserSession", webRoutes);
 
 app.use((err, req, res, next) => {
   console.error("Lỗi hệ thống:", err);
