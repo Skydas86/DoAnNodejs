@@ -1,4 +1,4 @@
-const { getUsers, renderBooksPage, renderBookDetail,renderBookRecord, renderFullTextSearch} = require('../controllers/homeController')
+const { getUsers, renderBooksPage, renderBookDetail,renderBookRecord, renderFullTextSearch, renderCart} = require('../controllers/homeController')
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
@@ -26,6 +26,7 @@ router.use('/api', require('./api'));
   router.get('/dashboard/borrowings/:id', renderBorrowingDetail);
   router.get('/dashboard/penalties', renderPenalties);
   router.get('/dashboard/categories', renderCategories);
+  router.get('/cart', renderCart);
 
   router.post("/login", login);
   router.get("/login", requireAuth, (req, res) => { 

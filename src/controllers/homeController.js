@@ -14,4 +14,8 @@ const renderFullTextSearch = (req, res) => {
     res.render('fullTextSearch.ejs');
 }
 
-module.exports ={ renderBooksPage, renderBookDetail, renderBookRecord, renderFullTextSearch }
+const renderCart = (req, res) => {
+    res.render('cart.ejs');
+}
+
+module.exports ={ renderBooksPage, renderBookDetail, renderBookRecord, renderFullTextSearch, renderCart }

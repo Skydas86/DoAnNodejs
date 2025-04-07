@@ -432,7 +432,7 @@ function createBookCard(book) {
             <p class="book-year">Published: ${book.year}</p>
             <div class="book-actions">
                 <a href="/books/${book.id}" class="btn btn-outline">Details</a>
-                <button class="btn btn-primary" ${!book.available ? 'disabled' : ''}>
+                <button class="btn btn-primary borrow-btn" data-id="${book.id}" ${!book.available ? 'disabled' : ''}>
                     ${book.available ? 'Borrow' : 'Reserve'}
                 </button>
             </div>
@@ -464,7 +464,7 @@ function createBookListItem(book) {
             <p class="book-list-description">${book.description}</p>
             <div class="book-list-actions">
                 <button class="btn btn-outline">Details</button>
-                <button class="btn btn-primary" ${!book.available ? 'disabled' : ''}>
+                <button class="btn btn-primary borrow-btn" data-id="${book.id}" ${!book.available ? 'disabled' : ''}>
                     ${book.available ? 'Borrow' : 'Reserve'}
                 </button>
             </div>
@@ -472,4 +472,25 @@ function createBookListItem(book) {
     `;
 
     return bookListItem;
+}
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('borrow-btn')) {
+        const bookId = parseInt(e.target.getAttribute('data-id'));
+        addToCart(bookId);
+    }
+});
+
+function addToCart(bookId) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const index = cart.findIndex(item => item[0] === bookId);
+
+    if (index > -1) {
+        cart[index][1] += 1;
+    } else {
+        cart.push([bookId, 1]);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Book added to cart!');
 }
