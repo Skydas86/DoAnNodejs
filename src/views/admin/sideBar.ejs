@@ -25,9 +25,9 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <a href="/dashboard/member">
+                    <a href="/dashboard/penalties">
                         <i class="fas fa-users"></i>
-                        <span>Members</span>
+                        <span>Penalties</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
@@ -36,21 +36,10 @@
                         <span>Borrowings</span>
                     </a>
                 </li>
-            </ul>
-        </div>
-        <div class="sidebar-group">
-            <h3 class="sidebar-group-title">Administration</h3>
-            <ul class="sidebar-menu">
                 <li class="sidebar-menu-item">
-                    <a href="staff.html">
-                        <i class="fas fa-user-tie"></i>
-                        <span>Staff</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="settings.html">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                        <span>Homepage</span>
                     </a>
                 </li>
             </ul>
@@ -93,5 +82,6 @@
         })
         .catch(error => {
             alert("Error fetching user data:", error);
+            window.location.href = '/login';
         });
 </script>

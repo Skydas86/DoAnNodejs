@@ -30,6 +30,10 @@ const renderBorrowingDetail = (req, res) => {
     res.render('admin/recordDetail.ejs');
 }
 
+const renderPenalties = (req, res) => {
+    res.render('admin/penalties.ejs');
+}
+
 module.exports = {
     renderDashboard,
     renderDashboardBook, 
@@ -38,5 +42,6 @@ module.exports = {
     renderEditBook, 
     renderBorrowings, 
     renderAddBorrowing,
-    renderBorrowingDetail
+    renderBorrowingDetail,
+    renderPenalties
 };
