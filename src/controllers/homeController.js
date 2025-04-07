@@ -9,4 +9,9 @@ const renderBookDetail = (req, res) => {
 const renderBookRecord = (req, res) => {
     res.render('borrowrecords.ejs');
 }
-module.exports ={ renderBooksPage, renderBookDetail, renderBookRecord }
+
+const renderFullTextSearch = (req, res) => {
+    res.render('fullTextSearch.ejs');
+}
+
+module.exports ={ renderBooksPage, renderBookDetail, renderBookRecord, renderFullTextSearch }

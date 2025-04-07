@@ -418,7 +418,7 @@ function createBookCard(book) {
 
     bookCard.innerHTML = `
         <div class="book-cover">
-            <img src="${book.coverImage}" alt="${book.title}">
+            <img src="/${book.coverImage}" alt="${book.title}">
             <div class="book-badge ${book.available ? 'badge-available' : 'badge-unavailable'}">
                 ${book.available ? 'Available' : 'Unavailable'}
             </div>
