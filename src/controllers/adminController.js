@@ -18,4 +18,25 @@ const renderEditBook = (req, res) => {
     res.render('admin/editBook.ejs');
 }
 
-module.exports = { renderDashboard, renderDashboardBook, renderDashboardMember, renderAddBook, renderEditBook };
+const renderBorrowings = (req, res) => {
+    res.render('admin/borrowings.ejs');
+}
+
+const renderAddBorrowing = (req, res) => {
+    res.render('admin/addRecord.ejs');
+}
+
+const renderBorrowingDetail = (req, res) => {
+    res.render('admin/recordDetail.ejs');
+}
+
+module.exports = {
+    renderDashboard,
+    renderDashboardBook, 
+    renderDashboardMember, 
+    renderAddBook, 
+    renderEditBook, 
+    renderBorrowings, 
+    renderAddBorrowing,
+    renderBorrowingDetail
+};

@@ -8,7 +8,7 @@ db.Role = require('./role')(sequelize, DataTypes);
 db.Book = require('./book')(sequelize, DataTypes);
 db.Category = require('./categories')(sequelize, DataTypes);
 db.BookCategory = require('./bookCategory')(sequelize, DataTypes);
-db.BorrowRecord = require('./borrowRecord')(sequelize, DataTypes);
+db.   BorrowRecord = require('./borrowRecord')(sequelize, DataTypes);
 db.RecordDetail = require('./recordDetail')(sequelize, DataTypes);
 db.Penalty = require('./penalty')(sequelize, DataTypes);
 
@@ -18,9 +18,6 @@ db.Role.hasMany(db.User, { foreignKey: 'RoleId' });
 
 db.User.hasMany(db.BorrowRecord, { foreignKey: 'UserId' });
 db.BorrowRecord.belongsTo(db.User, { foreignKey: 'UserId' });
-
-db.Book.hasMany(db.BorrowRecord, { foreignKey: 'BookId' });
-db.BorrowRecord.belongsTo(db.Book, { foreignKey: 'BookId' });
 
 db.Book.belongsToMany(db.Category, { through: db.BookCategory });
 db.Category.belongsToMany(db.Book, { through: db.BookCategory });
