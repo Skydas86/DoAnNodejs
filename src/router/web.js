@@ -2,7 +2,7 @@ const { getUsers, renderBooksPage, renderBookDetail,renderBookRecord, renderFull
 const express = require('express');
 const router = express.Router();
 const { register, login, getUserSession, requireAuth} = require("../controllers/authController");
-const { renderDashboard, renderDashboardBook, renderDashboardMember, renderAddBook, renderEditBook, renderBorrowings, renderAddBorrowing, renderBorrowingDetail, renderPenalties } = require('../controllers/adminController');
+const { renderDashboard, renderDashboardBook, renderDashboardMember, renderAddBook, renderEditBook, renderBorrowings, renderAddBorrowing, renderBorrowingDetail, renderPenalties, renderCategories } = require('../controllers/adminController');
 const IsAdmin = require('../middlewares/IsAdmin');
 
 
@@ -25,6 +25,7 @@ router.use('/api', require('./api'));
   router.get('/dashboard/borrowings/add', renderAddBorrowing);
   router.get('/dashboard/borrowings/:id', renderBorrowingDetail);
   router.get('/dashboard/penalties', renderPenalties);
+  router.get('/dashboard/categories', renderCategories);
 
   router.post("/login", login);
   router.get("/login", requireAuth, (req, res) => { 
