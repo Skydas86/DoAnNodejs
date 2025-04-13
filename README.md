@@ -28,5 +28,3 @@ This project was developed by a team of 5 dedicated students:
 - Nguyễn Trung Kiên
 - Trần Tấn Phát
 
-## 📁 Project Structure
-
